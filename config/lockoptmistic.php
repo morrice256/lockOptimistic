@@ -13,6 +13,6 @@ return [
 	'value_type' => 'timestamp', // [timestamp] //The value type of collum to audit
     ],
     'result' => [
-       'type' => 'exception' //[exception, log, message]
+       'type' => 'exception' //[exception]
     ]
 ];
