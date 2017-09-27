@@ -14,9 +14,10 @@
     "require-dev": {
         "phpunit/phpunit": "6.3.*"
     },
+    "classmap": [ "src/" ],
     "autoload": {
         "psr-4": {
-            "Morrice256\\LockOptimistic\\": "src"
+            "Morrice256\\OptimisticLock\\": "src/"
         }
     }
 }

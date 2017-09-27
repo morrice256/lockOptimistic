@@ -1,6 +1,6 @@
 <?php
 
-use Morrice256\LockOptimistic\LockOptimistic;
+use Morrice256\OptimisticLock\LockOptimistic;
 
 /**
  * Description of LockOptimisticTest
@@ -17,7 +17,7 @@ class LockOptimisticBussinesTest extends PHPUnit\Framework\TestCase {
     }
     
     /**
-     * @expectedException Morrice256\LockOptimistic\Exceptions\InvalidArgumentExceptionLockOptismitc
+     * @expectedException Morrice256\OptimisticLock\Exceptions\InvalidArgumentExceptionLockOptismitc
      */
     public function testTraitMethodcheckLabelExistsLabelNULL(){
 
@@ -27,7 +27,7 @@ class LockOptimisticBussinesTest extends PHPUnit\Framework\TestCase {
     }
     
     /**
-     * @expectedException Morrice256\LockOptimistic\Exceptions\NotFoundArgumentExceptionLockOptismitc
+     * @expectedException Morrice256\OptimisticLock\Exceptions\NotFoundArgumentExceptionLockOptismitc
      */
     public function testTraitMethodcheckLabelExistsLabelFail(){
 
@@ -37,7 +37,7 @@ class LockOptimisticBussinesTest extends PHPUnit\Framework\TestCase {
     }
     
     /**
-     * @expectedException Morrice256\LockOptimistic\Exceptions\InvalidValueExceptionLockOptismitc
+     * @expectedException Morrice256\OptimisticLock\Exceptions\InvalidValueExceptionLockOptismitc
      */
     public function testTraitMethodcheckIsInvalideValue(){
 
@@ -47,7 +47,7 @@ class LockOptimisticBussinesTest extends PHPUnit\Framework\TestCase {
     }
     
     /**
-     * @expectedException Morrice256\LockOptimistic\Exceptions\NotFoundValueExceptionLockOptismitc
+     * @expectedException Morrice256\OptimisticLock\Exceptions\NotFoundValueExceptionLockOptismitc
      */
     public function testTraitMethodcheckIsInvalideValueNull(){
 
@@ -66,5 +66,16 @@ class MockParent{
         
 class Mock extends MockParent{
     use LockOptimistic;
+    
+    private $primaryKey = 'id';
+    
+    public function where(){
+        return true;
+    }
+    
+    public function first(){
+        return true;
+    }
+    
 }
         

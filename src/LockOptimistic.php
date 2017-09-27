@@ -1,6 +1,6 @@
 <?php
 
-namespace Morrice256\LockOptimistic;
+namespace Morrice256\OptimisticLock;
 
 /**
  * Description of LockOptimistic
@@ -8,17 +8,17 @@ namespace Morrice256\LockOptimistic;
  * @author morrice256
  * 
  */
-use Morrice256\LockOptimistic\Exceptions\InvalidArgumentExceptionLockOptismitc;
-use Morrice256\LockOptimistic\Exceptions\NotFoundArgumentExceptionLockOptismitc;
-use Morrice256\LockOptimistic\Exceptions\NotFoundValueExceptionLockOptismitc;
-use Morrice256\LockOptimistic\Exceptions\InvalidValueExceptionLockOptismitc;
-use Morrice256\LockOptimistic\Exceptions\ReferenceObjectExceptionLockOptismitc;
+use Morrice256\OptimisticLock\Exceptions\InvalidArgumentExceptionLockOptismitc;
+use Morrice256\OptimisticLock\Exceptions\NotFoundArgumentExceptionLockOptismitc;
+use Morrice256\OptimisticLock\Exceptions\NotFoundValueExceptionLockOptismitc;
+use Morrice256\OptimisticLock\Exceptions\InvalidValueExceptionLockOptismitc;
+use Morrice256\OptimisticLock\Exceptions\ReferenceObjectExceptionLockOptismitc;
 
 trait LockOptimistic {
 
     private $config;
     
-    public function update(array $array){
+    public function update(array $array = [], array $options = []){
 
         if(!$this->config){
             $this->config = include('./config/lockoptmistic.php');
@@ -26,35 +26,34 @@ trait LockOptimistic {
         
         $this->callValidations( $array );
         
-        return parent::update($array);
+        return parent::update($array, $options);
 
     }
     
-    public function save(){
+    public function save(array $options = []){
 
         if(!$this->config){
             $this->config = include('./config/lockoptmistic.php');
         }
             
-        $primaryKey = $this->primaryKey;
-        
-        if( property_exists($this, $primaryKey) && $this->$primaryKey != null){
+        $primaryKey = $this->primaryKey;        
+        if( isset($this->$primaryKey) && $this->$primaryKey != null){
             
-           $this->callValidations( get_object_vars( $this ) );
-            
+           $this->callValidations( $this->attributes );
+           
+           $this->checkValue( $this->attributes  );
+
         }
         
-        return parent::save();
-
+        
+        return parent::save($options);
     }
     
     private function callValidations(array $array){
         
         $this->checkLabelExists($array);
         
-        $this->checkIsValideValue($array);
-        
-        $this->checkValue( $array );
+        $this->checkIsValideValue($array);        
         
     }
 
@@ -105,7 +104,7 @@ trait LockOptimistic {
          
         $return = $this->where($primaryKey, $this->$primaryKey)
                        ->where($this->config['audit']['field_name'], $array[ $this->config['audit']['field_name'] ])
-                       ->get();
+                       ->first();
         
         if(!$return){
             throw new ReferenceObjectExceptionLockOptismitc();

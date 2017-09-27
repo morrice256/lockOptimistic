@@ -1,6 +1,6 @@
 <?php
 
-use Morrice256\LockOptimistic\LockOptimistic;
+use Morrice256\OptimisticLock\LockOptimistic;
 
 /**
  * Description of LockOptimisticTest
@@ -20,7 +20,7 @@ class LockOptimisticStructureTest extends PHPUnit\Framework\TestCase {
     
     public function testUpdateMethodWithOnlyOneArgs(){
         $method = new ReflectionMethod( LockOptimistic::class , 'update');
-        $this->assertEquals( 1, $method->getNumberOfParameters() );
+        $this->assertEquals( 2, $method->getNumberOfParameters() );
     }
     
     public function testConfigFileExists(){

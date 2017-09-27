@@ -1,6 +1,6 @@
 <?php
 
-namespace Morrice256\LockOptimistic\Exceptions;
+namespace Morrice256\OptimisticLock\Exceptions;
 
 /**
  * Description of InvalidArgumentExceptionLockOptismitc
